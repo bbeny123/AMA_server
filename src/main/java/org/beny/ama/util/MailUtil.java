@@ -16,7 +16,7 @@ public class MailUtil {
     private static MessageSource messageSource;
 
     @Autowired
-    private MailUtil(JavaMailSender mailSender, MessageSource messageSource, @Value("${registration.url:http://localhost:8801/register/activate?token=}") String url) {
+    private MailUtil(JavaMailSender mailSender, MessageSource messageSource, @Value("${registration.url:http://localhost:8081/register/activate?token=}") String url) {
         MailUtil.mailSender = mailSender;
         MailUtil.messageSource = messageSource;
         MailUtil.url = url;

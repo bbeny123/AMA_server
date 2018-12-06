@@ -34,4 +34,4 @@ captcha:
   secret:
   site:
 registration:
-  url: http://localhost:8801/register/activate?token=
+  url: http://localhost:8081/register/activate?token=
