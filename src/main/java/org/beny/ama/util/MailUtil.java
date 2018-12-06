@@ -15,15 +15,11 @@ public class MailUtil {
     private static JavaMailSender mailSender;
     private static MessageSource messageSource;
 
-    @Value("${registration.url:http://localhost:8801/register/activate?token=}")
-    private void setPrivateName(String url) {
-        MailUtil.url = url;
-    }
-
     @Autowired
-    private MailUtil(JavaMailSender mailSender, MessageSource messageSource) {
+    private MailUtil(JavaMailSender mailSender, MessageSource messageSource, @Value("${registration.url:http://localhost:8801/register/activate?token=}") String url) {
         MailUtil.mailSender = mailSender;
         MailUtil.messageSource = messageSource;
+        MailUtil.url = url;
     }
 
     public static void sendActivationEmail(String email, String token) {

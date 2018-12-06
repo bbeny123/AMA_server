@@ -16,12 +16,12 @@ import org.springframework.web.servlet.view.RedirectView;
 
 public abstract class BaseController {
 
-    private final Logger logger;
-    private final MessageSource messageSource;
-    private boolean listView;
     final String viewName;
     final String url;
     final String redirect = "redirect:/";
+    private final Logger logger;
+    private final MessageSource messageSource;
+    private boolean listView;
 
     public BaseController(String viewName, String url, MessageSource messageSource) {
         this.logger = LogManager.getLogger(this.getClass());
@@ -65,7 +65,7 @@ public abstract class BaseController {
     }
 
     String redirectToUrl() {
-        return redirect+viewName;
+        return redirect + viewName;
     }
 
     UserContext getUserContext() {

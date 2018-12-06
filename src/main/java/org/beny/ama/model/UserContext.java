@@ -10,8 +10,8 @@ import java.util.List;
 
 public class UserContext implements UserDetails, Authentication {
 
-    private User user;
     private final List<GrantedAuthority> authorities;
+    private User user;
 
     public UserContext() {
         this.authorities = new ArrayList<>();

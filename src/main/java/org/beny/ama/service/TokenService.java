@@ -1,10 +1,10 @@
 package org.beny.ama.service;
 
+import org.beny.ama.model.Token;
+import org.beny.ama.repository.TokenRepository;
 import org.beny.ama.util.AmaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.beny.ama.model.Token;
-import org.beny.ama.repository.TokenRepository;
 
 @Service
 public class TokenService extends BaseService<Token> {

@@ -1,15 +1,17 @@
 package org.beny.ama.util;
 
+import org.beny.ama.dto.CaptchaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.beny.ama.dto.CaptchaResponse;
 
 import java.util.Objects;
 
 @Component
 public class CaptchaUtil {
+
+    private final RestTemplate restTemplate;
 
     @Value("${captcha.url:null}")
     private String url;
@@ -19,8 +21,6 @@ public class CaptchaUtil {
 
     @Value("${captcha.secret:null}")
     private String secret;
-
-    private final RestTemplate restTemplate;
 
     @Autowired
     private CaptchaUtil(RestTemplate restTemplate) {

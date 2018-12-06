@@ -1,10 +1,10 @@
 package org.beny.ama.service;
 
+import org.beny.ama.model.UserContext;
+import org.beny.ama.repository.BaseRepository;
 import org.beny.ama.util.AmaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.beny.ama.model.UserContext;
-import org.beny.ama.repository.BaseRepository;
 
 import java.util.List;
 
