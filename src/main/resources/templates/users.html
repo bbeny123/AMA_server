@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--/*/ <th:block th:include="fragments/head :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container mb-2">
+    <!--/*/ <th:block th:include="fragments/menu :: menu"></th:block> /*/-->
+    <script>activateUsers();</script>
+    <!--/*@thymesVar id="usr" type="org.beny.ama.dto.UserResponse"*/-->
+    <div class="mt-3">
+        <table id="data" class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{user.id}"></th>
+                <th th:text="#{user.email}"></th>
+                <th th:text="#{user.name}"></th>
+                <th th:text="#{user.type}"></th>
+                <th th:text="#{user.active}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="align-middle" th:each="usr : ${users}">
+                <td th:text="${usr.id}"></td>
+                <td th:text="${usr.email}"></td>
+                <td th:text="${usr.name}"></td>
+                <td th:text="${usr.type}"></td>
+                <td th:switch="${usr.active}">
+                    <span th:case="true" th:text="#{user.active.active}"></span>
+                    <form th:case="false" th:action="@{'/users/' + ${usr.id} + '/activate'}" method="post">
+                        <button class="btn btn-link p-0 align-baseline" type="submit" th:text="#{user.active.activate}"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
