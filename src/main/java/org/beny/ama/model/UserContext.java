@@ -35,6 +35,10 @@ public class UserContext implements UserDetails, Authentication {
         return User.Type.A == user.getType();
     }
 
+    public boolean isBusiness() {
+        return User.Type.B == user.getType();
+    }
+
     @Override
     public User getPrincipal() {
         return user;

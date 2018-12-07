@@ -1,8 +1,10 @@
 package org.beny.ama.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.beny.ama.model.Coupon;
 import org.beny.ama.util.ContextHolder;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -25,6 +27,7 @@ public class CouponRequest {
     }
 
     @NotNull
+    @Min(0)
     public Long getCost() {
         return cost;
     }

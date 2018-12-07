@@ -7,18 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TokenService extends BaseService<Token> {
-
-    private final TokenRepository repository;
+public class TokenService extends BaseService<Token, TokenRepository> {
 
     @Autowired
     public TokenService(TokenRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 
     public Token findByToken(String token) throws AmaException {
-        return repository.findByToken(token).orElseThrow(() -> new AmaException(AmaException.AmaErrors.TOKEN_NOT_EXISTS));
+        return getRepository().findByToken(token).orElseThrow(() -> new AmaException(AmaException.AmaErrors.TOKEN_NOT_EXISTS));
     }
 
 }

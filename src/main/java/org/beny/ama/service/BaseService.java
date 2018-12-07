@@ -3,18 +3,21 @@ package org.beny.ama.service;
 import org.beny.ama.model.UserContext;
 import org.beny.ama.repository.BaseRepository;
 import org.beny.ama.util.AmaException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public abstract class BaseService<T> {
+public abstract class BaseService<T, U extends BaseRepository<T>> {
 
-    private final BaseRepository<T> repository;
+    private final U repository;
 
-    public BaseService(BaseRepository<T> repository) {
+    public BaseService(U repository) {
         this.repository = repository;
+    }
+
+    @Transactional
+    void save(T data) {
+        repository.save(data);
     }
 
     @Transactional
@@ -24,8 +27,9 @@ public abstract class BaseService<T> {
     }
 
     @Transactional
-    void save(T data) {
-        repository.save(data);
+    void saveBusiness(UserContext ctx, T data) throws AmaException {
+        checkBusiness(ctx);
+        save(data);
     }
 
     @Transactional
@@ -44,22 +48,33 @@ public abstract class BaseService<T> {
         return findAll();
     }
 
-    private List<T> findAll() {
+    public List<T> findAll() {
         return repository.findAll();
     }
 
-    T findOneAdmin(UserContext ctx, Long id) throws AmaException {
+    public T findOne(Long id) throws AmaException {
+        return repository.findById(id).orElseThrow(() -> new AmaException(AmaException.AmaErrors.ITEM_NOT_EXISTS));
+    }
+
+    public T findOneAdmin(UserContext ctx, Long id) throws AmaException {
         checkAdmin(ctx);
         return findOne(id);
     }
 
-
-    T findOne(Long id) throws AmaException {
-        return repository.findById(id).orElseThrow(() -> new AmaException(AmaException.AmaErrors.ITEM_NOT_EXISTS));
+    public T findOneBusiness(UserContext ctx, Long id) throws AmaException {
+        checkBusiness(ctx);
+        return findOne(id);
     }
 
     void checkAdmin(UserContext ctx) throws AmaException {
-        if (!ctx.isAdmin()) throw new AmaException(AmaException.AmaErrors.UNAUTHORIZED);
+        if (!ctx.isAdmin()) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
     }
 
+    void checkBusiness(UserContext ctx) throws AmaException {
+        if (!ctx.isAdmin() && !ctx.isBusiness()) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+    }
+
+    protected U getRepository() {
+        return repository;
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public class AmaException extends RuntimeException {
 
     public enum AmaErrors {
+        FORBIDDEN(0, "Forbidden", HttpStatus.FORBIDDEN),
         UNAUTHORIZED(1, "Unauthorized", HttpStatus.UNAUTHORIZED),
         CAPTCHA_ERROR(2, "Captcha Error", HttpStatus.FORBIDDEN),
         USER_EXISTS(3, "The e-mail address is already in use", HttpStatus.CONFLICT),

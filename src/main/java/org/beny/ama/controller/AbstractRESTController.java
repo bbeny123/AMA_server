@@ -8,6 +8,7 @@ import org.beny.ama.util.AmaException;
 import org.beny.ama.util.ContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public abstract class AbstractRESTController {
@@ -18,6 +19,12 @@ public abstract class AbstractRESTController {
     public ResponseEntity<?> amaException(AmaException ex) {
         logger.warn(ex.getMessage());
         return ResponseEntity.status(ex.getHttpCode()).body(new ExceptionResponse(ex));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> validException(MethodArgumentNotValidException ex) {
+        logger.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse(ex));
     }
 
     @ExceptionHandler(Exception.class)
@@ -34,7 +41,7 @@ public abstract class AbstractRESTController {
         return ResponseEntity.ok().build();
     }
 
-    protected <T> ResponseEntity<?> ok(T t) {
+    protected <T> ResponseEntity<T> ok(T t) {
         return ResponseEntity.ok(t);
     }
 

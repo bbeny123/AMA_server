@@ -2,17 +2,46 @@ package org.beny.ama.dto;
 
 import org.beny.ama.model.QR;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class QRRequest {
+public class QRResponse {
 
+    private Long id;
+    private Long userId;
     private String description;
     private Long points;
     private LocalDate endDate;
-    private QR.Useability useability = QR.Useability.O;
-    private boolean active = true;
+    private QR.Useability useability;
+    private boolean active;
+
+    public QRResponse(QR qr) {
+        this.id = qr.getId();
+        this.userId = qr.getUserId();
+        this.description = qr.getDescription();
+        this.points = qr.getPoints();
+        this.endDate = qr.getEndDate();
+        this.useability = qr.getUseability();
+        this.active = qr.isActive();
+    }
+
+    @NotNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @NotNull
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getDescription() {
         return description;
@@ -23,7 +52,6 @@ public class QRRequest {
     }
 
     @NotNull
-    @Min(1)
     public Long getPoints() {
         return points;
     }
@@ -56,16 +84,4 @@ public class QRRequest {
         this.active = active;
     }
 
-    public QR getQR() {
-        return getQR(new QR());
-    }
-
-    public QR getQR(QR qr) {
-        qr.setDescription(description);
-        qr.setPoints(points);
-        qr.setEndDate(endDate);
-        qr.setUseability(useability);
-        qr.setActive(active);
-        return qr;
-    }
 }

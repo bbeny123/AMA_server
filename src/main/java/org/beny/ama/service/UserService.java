@@ -14,23 +14,20 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UserService extends BaseService<User> implements UserDetailsService {
-
-    private final UserRepository repository;
+public class UserService extends BaseService<User, UserRepository> implements UserDetailsService {
 
     @Autowired
     public UserService(UserRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 
     @Override
     public UserContext loadUserByUsername(String email) throws UsernameNotFoundException {
-        return new UserContext(repository.findOneByEmail(email).orElseThrow(() -> new UsernameNotFoundException("The e-mail does not exist in database")));
+        return new UserContext(getRepository().findOneByEmail(email).orElseThrow(() -> new UsernameNotFoundException("The e-mail does not exist in database")));
     }
 
     public boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
+        return getRepository().existsByEmail(email);
     }
 
     public void createUser(User user) throws AmaException {
@@ -64,7 +61,7 @@ public class UserService extends BaseService<User> implements UserDetailsService
     }
 
     public User findByEmail(String email) throws AmaException {
-        return repository.findOneByEmail(email).orElseThrow(() -> new AmaException(AmaException.AmaErrors.EMAIL_NOT_EXISTS));
+        return getRepository().findOneByEmail(email).orElseThrow(() -> new AmaException(AmaException.AmaErrors.EMAIL_NOT_EXISTS));
     }
 
     public void resendToken(User user) throws AmaException {
