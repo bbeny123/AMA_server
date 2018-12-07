@@ -35,3 +35,7 @@ captcha:
   site:
 registration:
   url: http://localhost:8081/register/activate?token=
+crypto:
+  aes:
+    key:
+    salt:
