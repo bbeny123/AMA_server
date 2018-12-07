@@ -16,4 +16,5 @@ public class AmaApplication {
     protected RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 }

@@ -5,11 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.beny.ama.dto.ExceptionResponse;
 import org.beny.ama.model.UserContext;
 import org.beny.ama.util.AmaException;
+import org.beny.ama.util.ContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public abstract class AbstractRESTController {
@@ -28,12 +26,8 @@ public abstract class AbstractRESTController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse(ex));
     }
 
-    UserContext getUserContext() {
-        return isAuthenticated() ? (UserContext) ((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication()).getUserAuthentication() : new UserContext();
-    }
-
-    boolean isAuthenticated() {
-        return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    protected UserContext getUserContext() {
+        return ContextHolder.getUserContext();
     }
 
     protected ResponseEntity<?> ok() {

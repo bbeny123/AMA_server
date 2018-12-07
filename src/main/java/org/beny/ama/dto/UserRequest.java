@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class RegistrationRequest {
+public class UserRequest {
 
     private String email;
     private String password;

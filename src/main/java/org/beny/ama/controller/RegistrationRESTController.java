@@ -1,6 +1,6 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.RegistrationRequest;
+import org.beny.ama.dto.UserRequest;
 import org.beny.ama.dto.ResendRequest;
 import org.beny.ama.service.TokenService;
 import org.beny.ama.service.UserService;
@@ -34,7 +34,7 @@ public class RegistrationRESTController extends AbstractRESTController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest userRequest) throws RuntimeException {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRequest userRequest) throws RuntimeException {
         if (captcha && !captchaUtil.checkCaptcha(userRequest.getCaptchaResponse()))
             throw new AmaException(AmaException.AmaErrors.CAPTCHA_ERROR);
         userService.createUser(userRequest.getUser(encoder));

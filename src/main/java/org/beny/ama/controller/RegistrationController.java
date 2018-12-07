@@ -1,6 +1,6 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.RegistrationRequest;
+import org.beny.ama.dto.UserRequest;
 import org.beny.ama.service.TokenService;
 import org.beny.ama.service.UserService;
 import org.beny.ama.util.AmaException;
@@ -39,7 +39,7 @@ public class RegistrationController extends BaseController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @Valid RegistrationRequest userRequest, @RequestParam("g-recaptcha-response") String captchaResponse) throws RuntimeException {
+    public String register(Model model, @Valid UserRequest userRequest, @RequestParam("g-recaptcha-response") String captchaResponse) throws RuntimeException {
         if (isAuthenticated()) {
             return redirect;
         }

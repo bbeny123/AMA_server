@@ -41,7 +41,7 @@ public class Coupon {
     @JoinColumn(name = "CPN_USR_ID", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "CPN_DESCRIPTION", length = 120)
+    @Column(name = "CPN_DESCRIPTION", nullable = false, length = 120)
     private String description;
 
     @Column(name = "CPN_POINTS_COST", nullable = false)

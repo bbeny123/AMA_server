@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.beny.ama.model.UserContext;
 import org.beny.ama.util.AmaException;
+import org.beny.ama.util.ContextHolder;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -55,24 +55,24 @@ public abstract class BaseController {
         return new RedirectView(listView ? "/" : url);
     }
 
-    String responseInfo(String viewName, Model model, String source) {
+    protected String responseInfo(String viewName, Model model, String source) {
         model.addAttribute("info", messageSource.getMessage(source, null, LocaleContextHolder.getLocale()));
         return viewName;
     }
 
-    String viewOrForwardToHome(String viewName) {
+    protected String viewOrForwardToHome(String viewName) {
         return isAuthenticated() ? redirect : viewName;
     }
 
-    String redirectToUrl() {
+    protected String redirectToUrl() {
         return redirect + viewName;
     }
 
-    UserContext getUserContext() {
+    protected UserContext getUserContext() {
         return isAuthenticated() ? (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal() : new UserContext();
     }
 
-    boolean isAuthenticated() {
-        return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    protected boolean isAuthenticated() {
+        return ContextHolder.isAuthenticated();
     }
 }
