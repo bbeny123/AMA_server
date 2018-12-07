@@ -6,19 +6,39 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "USER_COUPON")
 @SequenceGenerator(sequenceName = "SEQ_UCN", name = "SEQ_UCN")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = UserCoupon.EntityGraphs.WITH_DETAILS, attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("coupon")
+        }),
+        @NamedEntityGraph(name = UserCoupon.EntityGraphs.WITH_USER, attributeNodes = @NamedAttributeNode("user")),
+        @NamedEntityGraph(name = UserCoupon.EntityGraphs.WITH_COUPON, attributeNodes = @NamedAttributeNode("coupon"))
+})
 public class UserCoupon {
+
+    public interface EntityGraphs {
+        String WITH_DETAILS = "UserCoupon.WITH_DETAILS_GRAPH";
+        String WITH_USER = "UserCoupon.WITH_USER_GRAPH";
+        String WITH_COUPON = "UserCoupon.WITH_COUPON_GRAPH";
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_UCN")
     @Column(name = "UCN_ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "UCN_USR_ID", nullable = false)
+    @Column(name = "UCN_USR_ID", nullable = false)
+    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UCN_USR_ID", insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "UCN_CPN_ID", nullable = false)
+    @Column(name = "UCN_CPN_ID", nullable = false)
+    private Long couponId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UCN_CPN_ID", insertable = false, updatable = false)
     private Coupon coupon;
 
     @Column(name = "UCN_DATE", nullable = false)

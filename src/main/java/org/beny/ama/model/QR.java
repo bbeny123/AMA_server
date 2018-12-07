@@ -2,11 +2,27 @@ package org.beny.ama.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "QRS")
 @SequenceGenerator(sequenceName = "SEQ_QRS", name = "SEQ_QRS")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = QR.EntityGraphs.WITH_DETAILS, attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("users")
+        }),
+        @NamedEntityGraph(name = QR.EntityGraphs.WITH_USER, attributeNodes = @NamedAttributeNode("user")),
+        @NamedEntityGraph(name = QR.EntityGraphs.WITH_USERS, attributeNodes = @NamedAttributeNode("users"))
+})
 public class QR {
+
+    public interface EntityGraphs {
+        String WITH_DETAILS = "QR.WITH_DETAILS_GRAPH";
+        String WITH_USER = "QR.WITH_USER_GRAPH";
+        String WITH_USERS = "QR.WITH_USERS_GRAPH";
+    }
 
     public enum Useability {
         O,  //once
@@ -18,8 +34,11 @@ public class QR {
     @Column(name = "QRS_ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "QRS_USR_ID", nullable = false)
+    @Column(name = "QRS_USR_ID", nullable = false)
+    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QRS_USR_ID", insertable = false, updatable = false)
     private User user;
 
     @Column(name = "QRS_DESCRIPTION", length = 120)
@@ -38,12 +57,23 @@ public class QR {
     @Column(name = "QRS_ACTIVE", nullable = false)
     private boolean active = true;
 
+    @OneToMany(mappedBy = "qr", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserQR> users;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public User getUser() {
@@ -92,5 +122,16 @@ public class QR {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Set<UserQR> getUsers() {
+        if (users == null) {
+            users = new HashSet<>();
+        }
+        return users;
+    }
+
+    public void setUsers(Set<UserQR> users) {
+        this.users = users;
     }
 }

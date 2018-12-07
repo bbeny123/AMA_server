@@ -2,11 +2,27 @@ package org.beny.ama.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "COUPONS")
 @SequenceGenerator(sequenceName = "SEQ_CPN", name = "SEQ_CPN")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = Coupon.EntityGraphs.WITH_DETAILS, attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("users")
+        }),
+        @NamedEntityGraph(name = Coupon.EntityGraphs.WITH_USER, attributeNodes = @NamedAttributeNode("user")),
+        @NamedEntityGraph(name = Coupon.EntityGraphs.WITH_USERS, attributeNodes = @NamedAttributeNode("users"))
+})
 public class Coupon {
+
+    public interface EntityGraphs {
+        String WITH_DETAILS = "Coupon.WITH_DETAILS_GRAPH";
+        String WITH_USER = "Coupon.WITH_USER_GRAPH";
+        String WITH_USERS = "Coupon.WITH_USERS_GRAPH";
+    }
 
     public enum Useability {
         O,  //once
@@ -18,8 +34,11 @@ public class Coupon {
     @Column(name = "CPN_ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "CPN_USR_ID", nullable = false)
+    @Column(name = "CPN_USR_ID", nullable = false)
+    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CPN_USR_ID", insertable = false, updatable = false)
     private User user;
 
     @Column(name = "CPN_DESCRIPTION", length = 120)
@@ -38,12 +57,23 @@ public class Coupon {
     @Column(name = "CPN_ACTIVE", nullable = false)
     private boolean active = true;
 
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCoupon> users;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public User getUser() {
@@ -92,5 +122,16 @@ public class Coupon {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Set<UserCoupon> getUsers() {
+        if (users == null) {
+            users = new HashSet<>();
+        }
+        return users;
+    }
+
+    public void setUsers(Set<UserCoupon> users) {
+        this.users = users;
     }
 }

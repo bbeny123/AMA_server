@@ -1,11 +1,33 @@
 package org.beny.ama.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
 @SequenceGenerator(sequenceName = "SEQ_USR", name = "SEQ_USR")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_DETAILS, attributeNodes = {
+                @NamedAttributeNode("qrs"),
+                @NamedAttributeNode("coupons"),
+                @NamedAttributeNode("points"),
+                @NamedAttributeNode("userPoints")
+        }),
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_QRS, attributeNodes = @NamedAttributeNode("qrs")),
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_COUPONS, attributeNodes = @NamedAttributeNode("coupons")),
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_POINTS, attributeNodes = @NamedAttributeNode("points")),
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_USER_POINTS, attributeNodes = @NamedAttributeNode("userPoints"))
+})
 public class User {
+
+    public interface EntityGraphs {
+        String WITH_DETAILS = "User.WITH_DETAILS_GRAPH";
+        String WITH_QRS = "User.WITH_QRS_GRAPH";
+        String WITH_COUPONS = "User.WITH_COUPONS_GRAPH";
+        String WITH_POINTS = "User.WITH_POINTS_GRAPH";
+        String WITH_USER_POINTS = "User.WITH_USER_POINTS_GRAPH";
+    }
 
     public enum Type {
         A,  //admin
@@ -36,6 +58,18 @@ public class User {
 
     @Column(name = "USR_ACTIVE")
     private boolean active;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserQR> qrs;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCoupon> coupons;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Points> points;
+
+    @OneToMany(mappedBy = "businessUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Points> userPoints;
 
     public Long getId() {
         return id;
@@ -101,4 +135,47 @@ public class User {
         this.token.setToken(token);
     }
 
+    public Set<UserQR> getQrs() {
+        if (qrs == null) {
+            qrs = new HashSet<>();
+        }
+        return qrs;
+    }
+
+    public void setQrs(Set<UserQR> qrs) {
+        this.qrs = qrs;
+    }
+
+    public Set<UserCoupon> getCoupons() {
+        if (coupons == null) {
+            coupons = new HashSet<>();
+        }
+        return coupons;
+    }
+
+    public void setCoupons(Set<UserCoupon> coupons) {
+        this.coupons = coupons;
+    }
+
+    public Set<Points> getPoints() {
+        if (points == null) {
+            points = new HashSet<>();
+        }
+        return points;
+    }
+
+    public void setPoints(Set<Points> points) {
+        this.points = points;
+    }
+
+    public Set<Points> getUserPoints() {
+        if (userPoints == null) {
+            userPoints = new HashSet<>();
+        }
+        return userPoints;
+    }
+
+    public void setUserPoints(Set<Points> userPoints) {
+        this.userPoints = userPoints;
+    }
 }
