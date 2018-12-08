@@ -2,6 +2,7 @@ package org.beny.ama.controller;
 
 import org.beny.ama.dto.request.QRRequest;
 import org.beny.ama.dto.request.StatusRequest;
+import org.beny.ama.dto.response.QRListResponse;
 import org.beny.ama.dto.response.QRResponse;
 import org.beny.ama.service.QRService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class QRRESTController extends AbstractRESTController {
     }
 
     @GetMapping("/qrs")
-    public ResponseEntity<List<QRResponse>> findOwn() throws RuntimeException {
-        return ok(service.findOwn(getUserContext()).stream().map(QRResponse::new).collect(Collectors.toList()));
+    public ResponseEntity<List<QRListResponse>> findOwn() throws RuntimeException {
+        return ok(service.findOwn(getUserContext()).stream().map(QRListResponse::new).collect(Collectors.toList()));
     }
 
     @GetMapping("/qr/{id}")

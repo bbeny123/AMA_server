@@ -42,7 +42,7 @@ public class UserCoupon {
     private Coupon coupon;
 
     @Column(name = "UCN_DATE", nullable = false)
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
     public Long getId() {
         return id;
@@ -52,12 +52,28 @@ public class UserCoupon {
         this.id = id;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(Long couponId) {
+        this.couponId = couponId;
     }
 
     public Coupon getCoupon() {

@@ -4,15 +4,15 @@ import javax.validation.constraints.NotEmpty;
 
 public class ScanRequest {
 
-    private String request;
+    private String qr;
 
     @NotEmpty
-    public String getRequest() {
-        return request;
+    public String getQr() {
+        return qr;
     }
 
-    public void setRequest(String request) {
-        this.request = request;
+    public void setQr(String qr) {
+        this.qr = qr;
     }
 
 }

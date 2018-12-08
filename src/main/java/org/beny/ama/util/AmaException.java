@@ -16,6 +16,11 @@ public class AmaException extends RuntimeException {
         USER_ALREADY_ACTIVE(9, "User connected with this email is already active", HttpStatus.CONFLICT),
         PASSWORD_NOT_MATCH(11, "Passwords do not match", HttpStatus.BAD_REQUEST),
 
+        QR_MORE_THAN_ONCE(12, "This QR code can be scanned only once", HttpStatus.FORBIDDEN),
+        QR_MORE_THAN_ONCE_PER_DAY(13, "This QR code can be scanned only once per day", HttpStatus.FORBIDDEN),
+
+        COUPON_MORE_THAN_ONCE(14, "This coupon can be scanned only once", HttpStatus.FORBIDDEN),
+
         INTERNAL_SERVER_ERROR(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 
         private final int code;

@@ -2,6 +2,8 @@ package org.beny.ama.dto.response;
 
 import org.beny.ama.model.Coupon;
 
+import javax.validation.constraints.NotEmpty;
+
 public class CouponResponse extends CouponListResponse {
 
     private String qr;
@@ -11,6 +13,7 @@ public class CouponResponse extends CouponListResponse {
         this.qr = qr;
     }
 
+    @NotEmpty
     public String getQr() {
         return qr;
     }

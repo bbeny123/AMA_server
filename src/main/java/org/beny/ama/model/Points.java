@@ -41,7 +41,7 @@ public class Points {
     private User businessUser;
 
     @Column(name = "PNT_POINTS", nullable = false)
-    private Long points;
+    private Long points = 0L;
 
     public Long getId() {
         return id;
