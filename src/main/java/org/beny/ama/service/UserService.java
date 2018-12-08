@@ -1,8 +1,8 @@
 package org.beny.ama.service;
 
-import org.beny.ama.model.Token;
-import org.beny.ama.model.User;
-import org.beny.ama.model.UserContext;
+import org.beny.ama.model.*;
+import org.beny.ama.repository.UserCouponRepository;
+import org.beny.ama.repository.UserQRRepository;
 import org.beny.ama.repository.UserRepository;
 import org.beny.ama.util.AmaException;
 import org.beny.ama.util.MailUtil;
@@ -19,10 +19,14 @@ import java.util.UUID;
 public class UserService extends BaseService<User, UserRepository> implements UserDetailsService {
 
     private final PasswordEncoder encoder;
+    private final UserQRRepository userQRRepository;
+    private final UserCouponRepository userCouponRepository;
 
     @Autowired
-    public UserService(UserRepository repository, PasswordEncoder encoder) {
+    public UserService(UserRepository repository, UserQRRepository userQRRepository, UserCouponRepository userCouponRepository, PasswordEncoder encoder) {
         super(repository);
+        this.userQRRepository = userQRRepository;
+        this.userCouponRepository = userCouponRepository;
         this.encoder = encoder;
     }
 
@@ -85,6 +89,14 @@ public class UserService extends BaseService<User, UserRepository> implements Us
         if (!encoder.matches(currentPassword, user.getPassword())) throw new AmaException(AmaException.AmaErrors.PASSWORD_NOT_MATCH);
         user.setPassword(encoder.encode(newPassword));
         save(user);
+    }
+
+    public List<UserQR> historyQRs(UserContext ctx) {
+        return userQRRepository.findByUserId(ctx.getUserId());
+    }
+
+    public List<UserCoupon> historyCoupons(UserContext ctx) {
+        return userCouponRepository.findByUserId(ctx.getUserId());
     }
 
 }

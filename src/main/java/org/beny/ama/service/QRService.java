@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class QRService extends BaseService<QR, QRRepository> {
 
-    private PointsService pointsService;
+    private final PointsService pointsService;
 
     @Autowired
     public QRService(QRRepository repository, PointsService pointsService) {

@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class CouponService extends BaseService<Coupon, CouponRepository> {
 
-    private PointsService pointsService;
+    private final PointsService pointsService;
 
     @Autowired
     public CouponService(CouponRepository repository, PointsService pointsService) {
