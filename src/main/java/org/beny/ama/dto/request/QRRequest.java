@@ -40,6 +40,7 @@ public class QRRequest {
         this.endDate = endDate;
     }
 
+    @NotNull
     public QR.Useability getUseability() {
         return useability;
     }
@@ -48,6 +49,7 @@ public class QRRequest {
         this.useability = useability;
     }
 
+    @NotNull
     public boolean isActive() {
         return active;
     }

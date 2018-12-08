@@ -27,6 +27,12 @@ public class QRService extends BaseService<QR, QRRepository> {
         saveBusiness(ctx, qr);
     }
 
+    public void changeStatus(UserContext ctx, Long id, boolean active) throws AmaException {
+        QR qr = findOneBusiness(ctx, id);
+        qr.setActive(active);
+        modify(ctx, qr);
+    }
+
     public List<QR> findOwn(UserContext ctx) {
         return getRepository().findByUserId(ctx.getUserId());
     }

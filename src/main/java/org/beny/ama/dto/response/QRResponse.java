@@ -2,6 +2,7 @@ package org.beny.ama.dto.response;
 
 import org.beny.ama.model.QR;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -52,6 +53,7 @@ public class QRResponse {
     }
 
     @NotNull
+    @Min(1)
     public Long getPoints() {
         return points;
     }
@@ -68,6 +70,7 @@ public class QRResponse {
         this.endDate = endDate;
     }
 
+    @NotNull
     public QR.Useability getUseability() {
         return useability;
     }
@@ -76,6 +79,7 @@ public class QRResponse {
         this.useability = useability;
     }
 
+    @NotNull
     public boolean isActive() {
         return active;
     }

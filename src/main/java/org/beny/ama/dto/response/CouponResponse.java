@@ -1,4 +1,4 @@
-package org.beny.ama.dto.request;
+package org.beny.ama.dto.response;
 
 import org.beny.ama.model.Coupon;
 
@@ -6,13 +6,43 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class CouponRequest {
+public class CouponResponse {
 
+    private Long id;
+    private Long userId;
     private String description;
     private Long cost;
     private LocalDate endDate;
-    private Coupon.Useability useability = Coupon.Useability.O;
-    private boolean active = true;
+    private Coupon.Useability useability;
+    private boolean active;
+
+    public CouponResponse(Coupon coupon) {
+        this.id = coupon.getId();
+        this.userId = coupon.getUserId();
+        this.description = coupon.getDescription();
+        this.cost = coupon.getCost();
+        this.endDate = coupon.getEndDate();
+        this.useability = coupon.getUseability();
+        this.active = coupon.isActive();
+    }
+
+    @NotNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @NotNull
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getDescription() {
         return description;
@@ -58,16 +88,4 @@ public class CouponRequest {
         this.active = active;
     }
 
-    public Coupon getCoupon() {
-        return getCoupon(new Coupon());
-    }
-
-    public Coupon getCoupon(Coupon coupon) {
-        coupon.setDescription(description);
-        coupon.setCost(cost);
-        coupon.setEndDate(endDate);
-        coupon.setUseability(useability);
-        coupon.setActive(active);
-        return coupon;
-    }
 }
