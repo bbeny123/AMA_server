@@ -1,6 +1,6 @@
 package org.beny.ama.util;
 
-import org.beny.ama.dto.response.CaptchaResponse;
+import org.beny.ama.dto.user.CaptchaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
