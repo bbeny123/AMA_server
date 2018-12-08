@@ -52,4 +52,10 @@ public class QRRESTController extends AbstractRESTController {
         return ok();
     }
 
+    @DeleteMapping("/qr/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) throws RuntimeException {
+        service.delete(getUserContext(), id);
+        return ok();
+    }
+
 }

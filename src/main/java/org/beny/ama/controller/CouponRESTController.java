@@ -71,4 +71,10 @@ public class CouponRESTController extends AbstractRESTController {
         return ok();
     }
 
+    @DeleteMapping("/coupon/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) throws RuntimeException {
+        service.delete(getUserContext(), id);
+        return ok();
+    }
+
 }

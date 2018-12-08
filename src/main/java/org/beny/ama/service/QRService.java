@@ -41,6 +41,13 @@ public class QRService extends BaseService<QR, QRRepository> {
         modify(ctx, qr);
     }
 
+    public void delete(UserContext ctx, Long id) throws AmaException {
+        QR qr = findOneBusiness(ctx, id);
+        if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+        getRepository().delete(qr);
+    }
+
     public List<QR> findOwn(UserContext ctx) {
         return getRepository().findByUserId(ctx.getUserId());
     }

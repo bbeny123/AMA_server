@@ -44,6 +44,13 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         modify(ctx, coupon);
     }
 
+    public void delete(UserContext ctx, Long id) throws AmaException {
+        Coupon coupon = findOneBusiness(ctx, id);
+        if (!ctx.isAdmin() && !coupon.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+        getRepository().delete(coupon);
+    }
+
     @Transactional
     public void scan(UserContext ctx, Long id, Long userId) throws AmaException {
         Coupon coupon = getRepository().findOneById(id);
