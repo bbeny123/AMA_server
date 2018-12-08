@@ -3,8 +3,8 @@ package org.beny.ama.controller;
 import org.beny.ama.dto.UserCouponInfo;
 import org.beny.ama.dto.request.CouponRequest;
 import org.beny.ama.dto.request.StatusRequest;
-import org.beny.ama.dto.response.CouponDetailsResponse;
 import org.beny.ama.dto.response.CouponResponse;
+import org.beny.ama.dto.response.CouponListResponse;
 import org.beny.ama.service.CouponService;
 import org.beny.ama.util.CryptoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +27,18 @@ public class CouponRESTController extends AbstractRESTController {
     }
 
     @GetMapping("/coupons")
-    public ResponseEntity<List<CouponResponse>> findAll() throws RuntimeException {
-        return ok(service.findAll().stream().map(CouponResponse::new).collect(Collectors.toList()));
+    public ResponseEntity<List<CouponListResponse>> findAll() throws RuntimeException {
+        return ok(service.findAll().stream().map(CouponListResponse::new).collect(Collectors.toList()));
     }
 
     @GetMapping("/coupons/{businessId}")
-    public ResponseEntity<List<CouponResponse>> findAllByBusinessId(@PathVariable("businessId") Long businessId) throws RuntimeException {
-        return ok(service.findByBusinessId(businessId).stream().map(CouponResponse::new).collect(Collectors.toList()));
+    public ResponseEntity<List<CouponListResponse>> findAllByBusinessId(@PathVariable("businessId") Long businessId) throws RuntimeException {
+        return ok(service.findByBusinessId(businessId).stream().map(CouponListResponse::new).collect(Collectors.toList()));
     }
 
     @GetMapping("/coupon/{id}")
-    public ResponseEntity<CouponDetailsResponse> findOne(@PathVariable("id") Long id) throws RuntimeException {
-        return ok(new CouponDetailsResponse(service.findOne(id), CryptoUtil.encrypt(new UserCouponInfo(getUserContext().getUserId(), id))));
+    public ResponseEntity<CouponResponse> findOne(@PathVariable("id") Long id) throws RuntimeException {
+        return ok(new CouponResponse(service.findOne(id), CryptoUtil.encrypt(new UserCouponInfo(getUserContext().getUserId(), id))));
     }
 
     @PostMapping("/coupon")

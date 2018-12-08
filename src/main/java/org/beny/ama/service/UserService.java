@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +29,10 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     @Override
     public UserContext loadUserByUsername(String email) throws UsernameNotFoundException {
         return new UserContext(getRepository().findOneByEmail(email).orElseThrow(() -> new UsernameNotFoundException("The e-mail does not exist in database")));
+    }
+
+    public List<User> findBusinessUsers() {
+        return getRepository().findByType(User.Type.B);
     }
 
     public boolean existsByEmail(String email) {

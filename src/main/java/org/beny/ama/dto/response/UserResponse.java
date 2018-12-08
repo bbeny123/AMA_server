@@ -2,44 +2,15 @@ package org.beny.ama.dto.response;
 
 import org.beny.ama.model.User;
 
-public class UserResponse {
+public class UserResponse extends UserListResponse {
 
-    private Long id;
-    private String email;
-    private String name;
     private String type;
     private boolean active;
 
     public UserResponse(User user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.name = user.getName();
+        super(user);
         this.type = user.getType().name();
         this.active = user.isActive();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
