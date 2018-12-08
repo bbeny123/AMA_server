@@ -31,6 +31,11 @@ public class CouponRESTController extends AbstractRESTController {
         return ok(service.findAll().stream().map(CouponListResponse::new).collect(Collectors.toList()));
     }
 
+    @GetMapping("/coupons/own")
+    public ResponseEntity<List<CouponListResponse>> findOwn() throws RuntimeException {
+        return ok(service.findByBusinessId(getUserContext().getUserId()).stream().map(CouponListResponse::new).collect(Collectors.toList()));
+    }
+
     @GetMapping("/coupons/{businessId}")
     public ResponseEntity<List<CouponListResponse>> findAllByBusinessId(@PathVariable("businessId") Long businessId) throws RuntimeException {
         return ok(service.findByBusinessId(businessId).stream().map(CouponListResponse::new).collect(Collectors.toList()));
