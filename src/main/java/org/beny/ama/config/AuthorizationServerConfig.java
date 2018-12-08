@@ -31,6 +31,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private TokenStore tokenStore;
+
     @Value("${oauth.client.id:null}")
     private String clientId;
 
@@ -48,7 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(tokenStore())
+        endpoints.tokenStore(tokenStore)
                 .accessTokenConverter(tokenConverter)
                 .userDetailsService(userService)
                 .authenticationManager(authenticationManager);
@@ -68,5 +71,4 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenStore tokenStore() {
         return new JwtTokenStore(tokenConverter);
     }
-
 }
