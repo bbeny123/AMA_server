@@ -51,18 +51,21 @@ public class QRService extends BaseService<QR, QRRepository> {
     }
 
     @Transactional
-    public void scan(UserContext ctx, Long id, Long userId) throws AmaException {
+    public void scan(UserContext ctx, Long id, Long businessId) throws AmaException {
         QR qr = getRepository().findOneById(id);
-        UserQR userQR = qr.getUsers().stream().filter(q -> q.getUserId().equals(userId)).max(Comparator.comparing(UserQR::getDate)).orElse(null);
+
+        if (!qr.getUserId().equals(businessId)) throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
+
+        UserQR userQR = qr.getUsers().stream().filter(q -> q.getUserId().equals(ctx.getUserId())).max(Comparator.comparing(UserQR::getDate)).orElse(null);
 
         if (userQR != null && QR.Useability.O == qr.getUseability()) throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE);
         else if (userQR != null && !LocalDate.now().isAfter(userQR.getDate())) throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE_PER_DAY);
 
-        pointsService.addPoints(userId, qr.getUserId(), qr.getPoints());
+        pointsService.addPoints(ctx.getUserId(), qr.getUserId(), qr.getPoints());
 
         userQR = new UserQR();
-        userQR.setUserId(userId);
-        userQR.setUserId(id);
+        userQR.setUserId(ctx.getUserId());
+        userQR.setQrId(id);
         qr.getUsers().add(userQR);
         save(qr);
     }

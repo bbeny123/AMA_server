@@ -25,8 +25,9 @@ public class Coupon {
     }
 
     public enum Useability {
-        O,  //once
-        M   //multiple
+        O,  //once per user
+        M,  //multiple
+        X   //once
     }
 
     @Id

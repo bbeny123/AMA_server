@@ -1,6 +1,7 @@
 package org.beny.ama.controller;
 
 import org.beny.ama.dto.QRInfo;
+import org.beny.ama.dto.UserCouponInfo;
 import org.beny.ama.dto.request.ScanRequest;
 import org.beny.ama.service.CouponService;
 import org.beny.ama.service.QRService;
@@ -29,8 +30,12 @@ public class ScanRESTController extends AbstractRESTController {
 
     @PostMapping("/scan")
     public ResponseEntity<?> create(@Valid @RequestBody ScanRequest request) throws RuntimeException {
-        if (!getUserContext().isBusiness()) {
-            qrService.scan(getUserContext(), CryptoUtil.decrypt(request.getQr(), QRInfo.class));
+        if (getUserContext().isBusiness()) {
+            UserCouponInfo userCouponInfo = CryptoUtil.decrypt(request.getQr(), UserCouponInfo.class);
+            couponService.scan(getUserContext(), userCouponInfo.getCouponId(), userCouponInfo.getUserId());
+        } else if (!getUserContext().isBusiness()) {
+            QRInfo qrInfo = CryptoUtil.decrypt(request.getQr(), QRInfo.class);
+            qrService.scan(getUserContext(), qrInfo.getId(), qrInfo.getUserId());
         }
         return ok();
     }

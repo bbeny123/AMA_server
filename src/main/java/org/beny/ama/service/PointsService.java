@@ -2,6 +2,7 @@ package org.beny.ama.service;
 
 import org.beny.ama.model.Points;
 import org.beny.ama.repository.PointsRepository;
+import org.beny.ama.util.AmaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,15 @@ public class PointsService extends BaseService<Points, PointsRepository> {
             points.setBusinessUserId(businessId);
         }
         points.setPoints(points.getPoints() + value);
+        save(points);
+    }
+
+    public void subtractPoints(Long userId, Long businessId, Long value) throws AmaException {
+        Points points = getRepository().findOneByUserIdAndBusinessUserId(userId, businessId).orElse(null);
+
+        if (points == null || points.getPoints() < value) throw new AmaException(AmaException.AmaErrors.COUPON_INSUFFICIENT_POINTS);
+
+        points.setPoints(points.getPoints() - value);
         save(points);
     }
 

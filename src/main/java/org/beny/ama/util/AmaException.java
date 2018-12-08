@@ -20,6 +20,8 @@ public class AmaException extends RuntimeException {
         QR_MORE_THAN_ONCE_PER_DAY(13, "This QR code can be scanned only once per day", HttpStatus.FORBIDDEN),
 
         COUPON_MORE_THAN_ONCE(14, "This coupon can be scanned only once", HttpStatus.FORBIDDEN),
+        COUPON_USER_MORE_THAN_ONCE(15, "This coupon can be scanned only once per user", HttpStatus.FORBIDDEN),
+        COUPON_INSUFFICIENT_POINTS(16, "Insufficient user points", HttpStatus.FORBIDDEN),
 
         INTERNAL_SERVER_ERROR(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 
