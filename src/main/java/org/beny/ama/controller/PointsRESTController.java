@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/rest")
 public class PointsRESTController extends AbstractRESTController {
 
-    private UserService service;
+    private final UserService service;
 
     @Autowired
     public PointsRESTController(UserService userService) {

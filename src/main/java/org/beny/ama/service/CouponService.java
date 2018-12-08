@@ -32,7 +32,8 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
     }
 
     public void modify(UserContext ctx, Coupon coupon) throws AmaException {
-        if (!ctx.isAdmin() && !coupon.getUserId().equals(ctx.getUserId())) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+        if (!ctx.isAdmin() && !coupon.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
         saveBusiness(ctx, coupon);
     }
 
@@ -46,9 +47,12 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
     public void scan(UserContext ctx, Long id, Long userId) throws AmaException {
         Coupon coupon = getRepository().findOneById(id);
 
-        if (!coupon.getUserId().equals(ctx.getUserId())) throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
-        if (Coupon.Useability.X == coupon.getUseability() && !coupon.getUsers().isEmpty()) throw new AmaException(AmaException.AmaErrors.COUPON_MORE_THAN_ONCE);
-        if (coupon.getUsers().stream().anyMatch(c -> c.getUserId().equals(userId) & Coupon.Useability.O == coupon.getUseability())) throw new AmaException(AmaException.AmaErrors.COUPON_USER_MORE_THAN_ONCE);
+        if (!coupon.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
+        if (Coupon.Useability.X == coupon.getUseability() && !coupon.getUsers().isEmpty())
+            throw new AmaException(AmaException.AmaErrors.COUPON_MORE_THAN_ONCE);
+        if (coupon.getUsers().stream().anyMatch(c -> c.getUserId().equals(userId) & Coupon.Useability.O == coupon.getUseability()))
+            throw new AmaException(AmaException.AmaErrors.COUPON_USER_MORE_THAN_ONCE);
 
         pointsService.subtractPoints(userId, coupon.getUserId(), coupon.getCost());
 

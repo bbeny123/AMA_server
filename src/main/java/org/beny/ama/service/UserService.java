@@ -86,7 +86,8 @@ public class UserService extends BaseService<User, UserRepository> implements Us
 
     public void changePassword(UserContext ctx, String currentPassword, String newPassword) throws AmaException {
         User user = findOne(ctx.getUserId());
-        if (!encoder.matches(currentPassword, user.getPassword())) throw new AmaException(AmaException.AmaErrors.PASSWORD_NOT_MATCH);
+        if (!encoder.matches(currentPassword, user.getPassword()))
+            throw new AmaException(AmaException.AmaErrors.PASSWORD_NOT_MATCH);
         user.setPassword(encoder.encode(newPassword));
         save(user);
     }

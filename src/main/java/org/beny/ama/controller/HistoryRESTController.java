@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/rest")
 public class HistoryRESTController extends AbstractRESTController {
 
-    private UserService service;
+    private final UserService service;
 
     @Autowired
     public HistoryRESTController(UserService userService) {

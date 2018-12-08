@@ -3,8 +3,8 @@ package org.beny.ama.controller;
 import org.beny.ama.dto.UserCouponInfo;
 import org.beny.ama.dto.request.CouponRequest;
 import org.beny.ama.dto.request.StatusRequest;
-import org.beny.ama.dto.response.CouponResponse;
 import org.beny.ama.dto.response.CouponListResponse;
+import org.beny.ama.dto.response.CouponResponse;
 import org.beny.ama.service.CouponService;
 import org.beny.ama.util.CryptoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/rest")
 public class CouponRESTController extends AbstractRESTController {
 
-    private CouponService service;
+    private final CouponService service;
 
     @Autowired
     public CouponRESTController(CouponService couponService) {

@@ -19,8 +19,8 @@ import javax.validation.Valid;
 @RequestMapping("/rest")
 public class ScanRESTController extends AbstractRESTController {
 
-    private QRService qrService;
-    private CouponService couponService;
+    private final QRService qrService;
+    private final CouponService couponService;
 
     @Autowired
     public ScanRESTController(QRService qrService, CouponService couponService) {

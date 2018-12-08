@@ -30,7 +30,8 @@ public class QRService extends BaseService<QR, QRRepository> {
     }
 
     public void modify(UserContext ctx, QR qr) throws AmaException {
-        if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId())) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+        if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
         saveBusiness(ctx, qr);
     }
 
@@ -46,7 +47,8 @@ public class QRService extends BaseService<QR, QRRepository> {
 
     public QR findOneOwn(UserContext ctx, Long id) {
         QR qr = findOne(id);
-        if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId())) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
+        if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId()))
+            throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
         return qr;
     }
 
@@ -58,8 +60,10 @@ public class QRService extends BaseService<QR, QRRepository> {
 
         UserQR userQR = qr.getUsers().stream().filter(q -> q.getUserId().equals(ctx.getUserId())).max(Comparator.comparing(UserQR::getDate)).orElse(null);
 
-        if (userQR != null && QR.Useability.O == qr.getUseability()) throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE);
-        else if (userQR != null && !LocalDate.now().isAfter(userQR.getDate())) throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE_PER_DAY);
+        if (userQR != null && QR.Useability.O == qr.getUseability())
+            throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE);
+        else if (userQR != null && !LocalDate.now().isAfter(userQR.getDate()))
+            throw new AmaException(AmaException.AmaErrors.QR_MORE_THAN_ONCE_PER_DAY);
 
         pointsService.addPoints(ctx.getUserId(), qr.getUserId(), qr.getPoints());
 

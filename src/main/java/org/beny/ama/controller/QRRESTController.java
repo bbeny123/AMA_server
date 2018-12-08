@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/rest")
 public class QRRESTController extends AbstractRESTController {
 
-    private QRService service;
+    private final QRService service;
 
     @Autowired
     public QRRESTController(QRService qrService) {

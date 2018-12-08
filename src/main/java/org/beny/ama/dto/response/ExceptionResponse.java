@@ -18,7 +18,7 @@ public class ExceptionResponse {
     }
 
     public ExceptionResponse(MethodArgumentNotValidException ex) {
-        this.message = ex.getBindingResult().getAllErrors().stream().findFirst().map(error -> (ex.getBindingResult().getFieldError() != null ? ex.getBindingResult().getFieldError().getField() + " ": "") + error.getDefaultMessage()).orElseGet(ex::getLocalizedMessage);
+        this.message = ex.getBindingResult().getAllErrors().stream().findFirst().map(error -> (ex.getBindingResult().getFieldError() != null ? ex.getBindingResult().getFieldError().getField() + " " : "") + error.getDefaultMessage()).orElseGet(ex::getLocalizedMessage);
     }
 
     public ExceptionResponse(Exception ex) {
