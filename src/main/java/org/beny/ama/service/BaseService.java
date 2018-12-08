@@ -16,8 +16,8 @@ public abstract class BaseService<T, U extends BaseRepository<T>> {
     }
 
     @Transactional
-    protected void save(T data) {
-        repository.save(data);
+    protected T save(T data) {
+        return repository.save(data);
     }
 
     @Transactional
@@ -27,9 +27,9 @@ public abstract class BaseService<T, U extends BaseRepository<T>> {
     }
 
     @Transactional
-    protected void saveBusiness(UserContext ctx, T data) throws AmaException {
+    protected T saveBusiness(UserContext ctx, T data) throws AmaException {
         checkBusiness(ctx);
-        save(data);
+        return save(data);
     }
 
     @Transactional

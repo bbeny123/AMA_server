@@ -27,9 +27,9 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
         return getRepository().findByUserId(businessId);
     }
 
-    public void create(UserContext ctx, Coupon coupon) throws AmaException {
+    public Coupon create(UserContext ctx, Coupon coupon) throws AmaException {
         coupon.setUserId(ctx.getUserId());
-        saveBusiness(ctx, coupon);
+        return saveBusiness(ctx, coupon);
     }
 
     public void modify(UserContext ctx, Coupon coupon) throws AmaException {

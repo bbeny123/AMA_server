@@ -23,7 +23,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final AuthenticationManager authenticationManager;
     private final TokenConverter tokenConverter;
     private final PasswordEncoder passwordEncoder;
-    private final TokenStore tokenStore;
     @Value("${oauth.client.id:null}")
     private String clientId;
     @Value("${oauth.client.secret:null}")
@@ -32,12 +31,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private int tokenValidity;
 
     @Autowired
-    public AuthorizationServerConfig(UserService userService, AuthenticationManager authenticationManager, TokenConverter tokenConverter, PasswordEncoder passwordEncoder, TokenStore tokenStore) {
+    public AuthorizationServerConfig(UserService userService, AuthenticationManager authenticationManager, TokenConverter tokenConverter, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.tokenConverter = tokenConverter;
         this.passwordEncoder = passwordEncoder;
-        this.tokenStore = tokenStore;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(tokenStore)
+        endpoints.tokenStore(tokenStore())
                 .accessTokenConverter(tokenConverter)
                 .userDetailsService(userService)
                 .authenticationManager(authenticationManager);

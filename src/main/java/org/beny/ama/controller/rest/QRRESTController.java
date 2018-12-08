@@ -35,9 +35,8 @@ public class QRRESTController extends AbstractRESTController {
     }
 
     @PostMapping("/qr")
-    public ResponseEntity<?> create(@Valid @RequestBody QRRequest request) throws RuntimeException {
-        service.create(getUserContext(), request.getQR());
-        return ok();
+    public ResponseEntity<QRResponse> create(@Valid @RequestBody QRRequest request) throws RuntimeException {
+        return ok(new QRResponse(service.create(getUserContext(), request.getQR())));
     }
 
     @PutMapping("/qr/{id}")

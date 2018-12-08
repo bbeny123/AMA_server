@@ -24,9 +24,9 @@ public class QRService extends BaseService<QR, QRRepository> {
         this.pointsService = pointsService;
     }
 
-    public void create(UserContext ctx, QR qr) throws AmaException {
+    public QR create(UserContext ctx, QR qr) throws AmaException {
         qr.setUserId(ctx.getUserId());
-        saveBusiness(ctx, qr);
+        return saveBusiness(ctx, qr);
     }
 
     public void modify(UserContext ctx, QR qr) throws AmaException {

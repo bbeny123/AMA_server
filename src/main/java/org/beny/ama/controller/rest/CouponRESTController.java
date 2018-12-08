@@ -1,11 +1,11 @@
 package org.beny.ama.controller.rest;
 
-import org.beny.ama.dto.user.UserCouponInfo;
-import org.beny.ama.dto.coupon.CouponRequest;
 import org.beny.ama.dto.StatusRequest;
 import org.beny.ama.dto.coupon.CouponListResponse;
 import org.beny.ama.dto.coupon.CouponPointsResponse;
+import org.beny.ama.dto.coupon.CouponRequest;
 import org.beny.ama.dto.coupon.CouponResponse;
+import org.beny.ama.dto.user.UserCouponInfo;
 import org.beny.ama.service.CouponService;
 import org.beny.ama.service.PointsService;
 import org.beny.ama.util.CryptoUtil;
@@ -54,9 +54,8 @@ public class CouponRESTController extends AbstractRESTController {
     }
 
     @PostMapping("/coupon")
-    public ResponseEntity<?> create(@Valid @RequestBody CouponRequest request) throws RuntimeException {
-        service.create(getUserContext(), request.getCoupon());
-        return ok();
+    public ResponseEntity<Long> create(@Valid @RequestBody CouponRequest request) throws RuntimeException {
+        return ok(service.create(getUserContext(), request.getCoupon()).getId());
     }
 
     @PutMapping("/coupon/{id}")
