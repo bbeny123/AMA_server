@@ -23,10 +23,10 @@ public class PointsRESTController extends AbstractRESTController {
         this.service = userService;
     }
 
-    @GetMapping("/business")
+    @GetMapping("/points")
     public ResponseEntity<List<PointsResponse>> points() throws RuntimeException {
         return ok(service.findBusinessUsers().stream()
-                .map(u -> new PointsResponse(u, u.getPoints().stream()
+                .map(u -> new PointsResponse(u, u.getUserPoints().stream()
                         .filter(p -> p.getUserId().equals(getUserContext().getUserId()))
                         .findFirst()
                         .map(Points::getPoints)

@@ -9,6 +9,10 @@ import java.util.List;
 @Repository
 public interface CouponRepository extends BaseRepository<Coupon> {
 
+    @EntityGraph(Coupon.EntityGraphs.WITH_USER)
+    List<Coupon> findAll();
+
+    @EntityGraph(Coupon.EntityGraphs.WITH_USER)
     List<Coupon> findByUserId(Long userId);
 
     @EntityGraph(Coupon.EntityGraphs.WITH_USERS)

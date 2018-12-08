@@ -4,8 +4,10 @@ import org.beny.ama.dto.UserCouponInfo;
 import org.beny.ama.dto.request.CouponRequest;
 import org.beny.ama.dto.request.StatusRequest;
 import org.beny.ama.dto.response.CouponListResponse;
+import org.beny.ama.dto.response.CouponPointsResponse;
 import org.beny.ama.dto.response.CouponResponse;
 import org.beny.ama.service.CouponService;
+import org.beny.ama.service.PointsService;
 import org.beny.ama.util.CryptoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,15 +23,18 @@ import java.util.stream.Collectors;
 public class CouponRESTController extends AbstractRESTController {
 
     private final CouponService service;
+    private final PointsService pointsService;
 
     @Autowired
-    public CouponRESTController(CouponService couponService) {
+    public CouponRESTController(CouponService couponService, PointsService pointsService) {
         this.service = couponService;
+        this.pointsService = pointsService;
     }
 
     @GetMapping("/coupons")
-    public ResponseEntity<List<CouponListResponse>> findAll() throws RuntimeException {
-        return ok(service.findAll().stream().map(CouponListResponse::new).collect(Collectors.toList()));
+    public ResponseEntity<List<CouponPointsResponse>> findAll() throws RuntimeException {
+        Map<Long, Long> userPoints = pointsService.ownPoints(getUserContext());
+        return ok(service.findAll().stream().map(c -> new CouponPointsResponse(c, c.getUser(), userPoints.getOrDefault(c.getUserId(), 0L))).collect(Collectors.toList()));
     }
 
     @GetMapping("/coupons/own")
@@ -37,8 +43,9 @@ public class CouponRESTController extends AbstractRESTController {
     }
 
     @GetMapping("/coupons/{businessId}")
-    public ResponseEntity<List<CouponListResponse>> findAllByBusinessId(@PathVariable("businessId") Long businessId) throws RuntimeException {
-        return ok(service.findByBusinessId(businessId).stream().map(CouponListResponse::new).collect(Collectors.toList()));
+    public ResponseEntity<List<CouponPointsResponse>> findAllByBusinessId(@PathVariable("businessId") Long businessId) throws RuntimeException {
+        Map<Long, Long> userPoints = pointsService.ownPoints(getUserContext());
+        return ok(service.findByBusinessId(businessId).stream().map(c -> new CouponPointsResponse(c, c.getUser(), userPoints.getOrDefault(c.getUserId(), 0L))).collect(Collectors.toList()));
     }
 
     @GetMapping("/coupon/{id}")
