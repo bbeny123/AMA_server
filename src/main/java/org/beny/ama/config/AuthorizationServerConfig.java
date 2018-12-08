@@ -19,29 +19,26 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private TokenConverter tokenConverter;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenStore tokenStore;
-
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenConverter tokenConverter;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenStore tokenStore;
     @Value("${oauth.client.id:null}")
     private String clientId;
-
     @Value("${oauth.client.secret:null}")
     private String clientSecret;
-
     @Value("${oauth.token.validity:86400}")
     private int tokenValidity;
+
+    @Autowired
+    public AuthorizationServerConfig(UserService userService, AuthenticationManager authenticationManager, TokenConverter tokenConverter, PasswordEncoder passwordEncoder, TokenStore tokenStore) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.tokenConverter = tokenConverter;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenStore = tokenStore;
+    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer server) {
