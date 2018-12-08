@@ -56,7 +56,12 @@ public class QRService extends BaseService<QR, QRRepository> {
     public void scan(UserContext ctx, Long id, Long businessId) throws AmaException {
         QR qr = getRepository().findOneById(id);
 
-        if (!qr.getUserId().equals(businessId)) throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
+        if (!qr.isActive())
+            throw new AmaException(AmaException.AmaErrors.QR_INACTIVE);
+        if (qr.getEndDate() != null && LocalDate.now().isAfter(qr.getEndDate()))
+            throw new AmaException(AmaException.AmaErrors.QR_ENDED);
+        if (!qr.getUserId().equals(businessId))
+            throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
 
         UserQR userQR = qr.getUsers().stream().filter(q -> q.getUserId().equals(ctx.getUserId())).max(Comparator.comparing(UserQR::getDate)).orElse(null);
 

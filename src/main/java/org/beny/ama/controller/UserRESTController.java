@@ -31,8 +31,8 @@ public class UserRESTController extends AbstractRESTController {
         return ok(new UserResponse(userService.findOne(getUserContext().getUserId())));
     }
 
-    @PutMapping("/user/password")
-    public ResponseEntity<?> changePassword(PasswordRequest request) throws RuntimeException {
+    @PatchMapping("/user/password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordRequest request) throws RuntimeException {
         request.isValid();
         userService.changePassword(getUserContext(), request.getCurrentPassword(), request.getNewPassword());
         return ok();

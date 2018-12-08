@@ -15,13 +15,18 @@ public class AmaException extends RuntimeException {
         TOKEN_NOT_EXISTS(7, "The token does not exist in database", HttpStatus.NOT_FOUND),
         USER_ALREADY_ACTIVE(9, "User connected with this email is already active", HttpStatus.CONFLICT),
         PASSWORD_NOT_MATCH(11, "Passwords do not match", HttpStatus.BAD_REQUEST),
+        PASSWORD_SAME_AS_OLD(12, "New password same as old", HttpStatus.BAD_REQUEST),
 
-        QR_MORE_THAN_ONCE(12, "This QR code can be scanned only once", HttpStatus.FORBIDDEN),
-        QR_MORE_THAN_ONCE_PER_DAY(13, "This QR code can be scanned only once per day", HttpStatus.FORBIDDEN),
+        QR_MORE_THAN_ONCE(100, "This QR code can be scanned only once", HttpStatus.FORBIDDEN),
+        QR_MORE_THAN_ONCE_PER_DAY(101, "This QR code can be scanned only once per day", HttpStatus.FORBIDDEN),
+        QR_INACTIVE(102, "This QR code is inactive", HttpStatus.FORBIDDEN),
+        QR_ENDED(103, "This QR code is no longer available", HttpStatus.FORBIDDEN),
 
-        COUPON_MORE_THAN_ONCE(14, "This coupon can be scanned only once", HttpStatus.FORBIDDEN),
-        COUPON_USER_MORE_THAN_ONCE(15, "This coupon can be scanned only once per user", HttpStatus.FORBIDDEN),
-        COUPON_INSUFFICIENT_POINTS(16, "Insufficient user points", HttpStatus.FORBIDDEN),
+        COUPON_MORE_THAN_ONCE(201, "This coupon can be scanned only once", HttpStatus.FORBIDDEN),
+        COUPON_USER_MORE_THAN_ONCE(202, "This coupon can be scanned only once per user", HttpStatus.FORBIDDEN),
+        COUPON_INSUFFICIENT_POINTS(203, "Insufficient user points", HttpStatus.FORBIDDEN),
+        COUPON_INACTIVE(201, "This coupon is inactive", HttpStatus.FORBIDDEN),
+        COUPON_ENDED(205, "This coupon is no longer available", HttpStatus.FORBIDDEN),
 
         INTERNAL_SERVER_ERROR(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 

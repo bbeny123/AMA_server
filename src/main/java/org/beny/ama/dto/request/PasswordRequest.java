@@ -39,5 +39,6 @@ public class PasswordRequest {
 
     public void isValid() throws AmaException {
         if (!newPassword.equals(confirmedPassword)) throw new AmaException(AmaException.AmaErrors.PASSWORD_NOT_MATCH);
+        if (currentPassword.equals(newPassword)) throw new AmaException(AmaException.AmaErrors.PASSWORD_SAME_AS_OLD);
     }
 }

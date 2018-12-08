@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -47,6 +48,10 @@ public class CouponService extends BaseService<Coupon, CouponRepository> {
     public void scan(UserContext ctx, Long id, Long userId) throws AmaException {
         Coupon coupon = getRepository().findOneById(id);
 
+        if (!coupon.isActive())
+            throw new AmaException(AmaException.AmaErrors.COUPON_INACTIVE);
+        if (coupon.getEndDate() != null && LocalDate.now().isAfter(coupon.getEndDate()))
+            throw new AmaException(AmaException.AmaErrors.COUPON_ENDED);
         if (!coupon.getUserId().equals(ctx.getUserId()))
             throw new AmaException(AmaException.AmaErrors.INTERNAL_SERVER_ERROR);
         if (Coupon.Useability.X == coupon.getUseability() && !coupon.getUsers().isEmpty())
