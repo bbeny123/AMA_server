@@ -1,13 +1,11 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.UserRequest;
+import org.beny.ama.dto.request.UserRequest;
 import org.beny.ama.service.TokenService;
 import org.beny.ama.service.UserService;
-import org.beny.ama.util.AmaException;
 import org.beny.ama.util.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +19,12 @@ public class RegistrationController extends BaseController {
 
     private final UserService userService;
     private final TokenService tokenService;
-    private final PasswordEncoder encoder;
-    private final CaptchaUtil captchaUtil;
 
     @Autowired
-    public RegistrationController(UserService userService, TokenService tokenService, PasswordEncoder encoder, CaptchaUtil captchaUtil, MessageSource messageSource) {
+    public RegistrationController(UserService userService, TokenService tokenService, MessageSource messageSource) {
         super("registration", "/register", messageSource);
         this.userService = userService;
         this.tokenService = tokenService;
-        this.encoder = encoder;
-        this.captchaUtil = captchaUtil;
     }
 
     @GetMapping("/register")
@@ -39,12 +33,12 @@ public class RegistrationController extends BaseController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @Valid UserRequest userRequest, @RequestParam("g-recaptcha-response") String captchaResponse) throws RuntimeException {
+    public String register(Model model, @Valid UserRequest userRequest, @RequestParam("g-recaptcha-response") String captcha) throws RuntimeException {
         if (isAuthenticated()) {
             return redirect;
         }
-        if (!captchaUtil.checkCaptcha(captchaResponse)) throw new AmaException(AmaException.AmaErrors.CAPTCHA_ERROR);
-        userService.createBusiness(userRequest.getUser(encoder));
+        CaptchaUtil.verifyCaptcha(captcha);
+        userService.createBusiness(userRequest.getUser());
         return responseInfo("login", model, "info.registered");
     }
 

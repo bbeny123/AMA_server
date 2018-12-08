@@ -1,4 +1,4 @@
-package org.beny.ama.dto;
+package org.beny.ama.dto.request;
 
 import org.hibernate.validator.constraints.Length;
 

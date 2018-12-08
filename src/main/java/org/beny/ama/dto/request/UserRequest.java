@@ -1,8 +1,7 @@
-package org.beny.ama.dto;
+package org.beny.ama.dto.request;
 
 import org.beny.ama.model.User;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -52,10 +51,10 @@ public class UserRequest {
         this.captchaResponse = captchaResponse;
     }
 
-    public User getUser(PasswordEncoder encoder) {
+    public User getUser() {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(encoder.encode(password));
+        user.setPassword(password);
         user.setName(name);
         return user;
     }

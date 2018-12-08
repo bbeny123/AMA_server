@@ -1,6 +1,6 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.UserResponse;
+import org.beny.ama.dto.response.UserResponse;
 import org.beny.ama.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

@@ -16,30 +16,30 @@ public abstract class BaseService<T, U extends BaseRepository<T>> {
     }
 
     @Transactional
-    void save(T data) {
+    protected void save(T data) {
         repository.save(data);
     }
 
     @Transactional
-    void saveAdmin(UserContext ctx, T data) throws AmaException {
+    protected void saveAdmin(UserContext ctx, T data) throws AmaException {
         checkAdmin(ctx);
         save(data);
     }
 
     @Transactional
-    void saveBusiness(UserContext ctx, T data) throws AmaException {
+    protected void saveBusiness(UserContext ctx, T data) throws AmaException {
         checkBusiness(ctx);
         save(data);
     }
 
     @Transactional
-    public T saveAndFlushAdmin(UserContext ctx, T data) throws AmaException {
+    protected T saveAndFlushAdmin(UserContext ctx, T data) throws AmaException {
         checkAdmin(ctx);
         return saveAndFlush(data);
     }
 
     @Transactional
-    T saveAndFlush(T data) {
+    protected T saveAndFlush(T data) {
         return repository.saveAndFlush(data);
     }
 
@@ -66,15 +66,16 @@ public abstract class BaseService<T, U extends BaseRepository<T>> {
         return findOne(id);
     }
 
-    void checkAdmin(UserContext ctx) throws AmaException {
+    protected void checkAdmin(UserContext ctx) throws AmaException {
         if (!ctx.isAdmin()) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
     }
 
-    void checkBusiness(UserContext ctx) throws AmaException {
+    protected void checkBusiness(UserContext ctx) throws AmaException {
         if (!ctx.isAdmin() && !ctx.isBusiness()) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
     }
 
     protected U getRepository() {
         return repository;
     }
+
 }

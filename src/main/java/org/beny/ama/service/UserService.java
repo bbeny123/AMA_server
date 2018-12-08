@@ -9,6 +9,7 @@ import org.beny.ama.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -16,9 +17,12 @@ import java.util.UUID;
 @Service
 public class UserService extends BaseService<User, UserRepository> implements UserDetailsService {
 
+    private final PasswordEncoder encoder;
+
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder encoder) {
         super(repository);
+        this.encoder = encoder;
     }
 
     @Override
@@ -40,6 +44,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
 
     private void create(User user, User.Type type) throws AmaException {
         if (existsByEmail(user.getEmail())) throw new AmaException(AmaException.AmaErrors.USER_EXISTS);
+        user.setPassword(encoder.encode(user.getPassword()));
         user.setType(type);
         user.setActive(false);
         user.setToken(UUID.randomUUID().toString());
@@ -54,10 +59,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     public void activate(UserContext ctx, Long userId) throws AmaException {
-        User user = findOneAdmin(ctx, userId);
-        user.setActive(true);
-        user.setToken((Token) null);
-        save(user);
+        activate(findOneAdmin(ctx, userId));
     }
 
     public User findByEmail(String email) throws AmaException {
@@ -71,6 +73,13 @@ public class UserService extends BaseService<User, UserRepository> implements Us
         user.setToken(UUID.randomUUID().toString());
         user = saveAndFlush(user);
         MailUtil.sendActivationEmail(user.getEmail(), user.getToken().getToken());
+    }
+
+    public void changePassword(UserContext ctx, String currentPassword, String newPassword) throws AmaException {
+        User user = findOne(ctx.getUserId());
+        if (!encoder.matches(currentPassword, user.getPassword())) throw new AmaException(AmaException.AmaErrors.PASSWORD_NOT_MATCH);
+        user.setPassword(encoder.encode(newPassword));
+        save(user);
     }
 
 }

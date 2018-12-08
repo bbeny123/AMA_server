@@ -1,43 +1,47 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.UserRequest;
-import org.beny.ama.dto.ResendRequest;
+import org.beny.ama.dto.request.PasswordRequest;
+import org.beny.ama.dto.request.ResendRequest;
+import org.beny.ama.dto.request.UserRequest;
+import org.beny.ama.dto.response.UserResponse;
 import org.beny.ama.service.TokenService;
 import org.beny.ama.service.UserService;
-import org.beny.ama.util.AmaException;
 import org.beny.ama.util.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rest")
-public class RegistrationRESTController extends AbstractRESTController {
+public class UserRESTController extends AbstractRESTController {
 
     private final UserService userService;
     private final TokenService tokenService;
-    private final PasswordEncoder encoder;
-    private final CaptchaUtil captchaUtil;
-    @Value("${captcha.enable:false}")
-    private boolean captcha;
 
     @Autowired
-    public RegistrationRESTController(UserService userService, TokenService tokenService, PasswordEncoder encoder, CaptchaUtil captchaUtil) {
+    public UserRESTController(UserService userService, TokenService tokenService) {
         this.userService = userService;
         this.tokenService = tokenService;
-        this.encoder = encoder;
-        this.captchaUtil = captchaUtil;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> userInfo() throws RuntimeException {
+        return ok(new UserResponse(userService.findOne(getUserContext().getUserId())));
+    }
+
+    @PutMapping("/user/password")
+    public ResponseEntity<?> changePassword(PasswordRequest request) throws RuntimeException {
+        request.isValid();
+        userService.changePassword(getUserContext(), request.getCurrentPassword(), request.getNewPassword());
+        return ok();
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRequest userRequest) throws RuntimeException {
-        if (captcha && !captchaUtil.checkCaptcha(userRequest.getCaptchaResponse()))
-            throw new AmaException(AmaException.AmaErrors.CAPTCHA_ERROR);
-        userService.createUser(userRequest.getUser(encoder));
+        CaptchaUtil.verifyCaptcha(userRequest.getCaptchaResponse());
+        userService.createUser(userRequest.getUser());
         return ok();
     }
 

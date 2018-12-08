@@ -1,4 +1,4 @@
-package org.beny.ama.dto;
+package org.beny.ama.dto.response;
 
 import org.beny.ama.model.User;
 

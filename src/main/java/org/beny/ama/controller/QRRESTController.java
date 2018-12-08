@@ -1,8 +1,8 @@
 package org.beny.ama.controller;
 
-import org.beny.ama.dto.QRRequest;
-import org.beny.ama.dto.QRResponse;
-import org.beny.ama.dto.StatusRequest;
+import org.beny.ama.dto.request.QRRequest;
+import org.beny.ama.dto.response.QRResponse;
+import org.beny.ama.dto.request.StatusRequest;
 import org.beny.ama.model.QR;
 import org.beny.ama.service.QRService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package org.beny.ama.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.beny.ama.dto.ExceptionResponse;
+import org.beny.ama.dto.response.ExceptionResponse;
 import org.beny.ama.model.UserContext;
 import org.beny.ama.util.AmaException;
 import org.beny.ama.util.ContextHolder;

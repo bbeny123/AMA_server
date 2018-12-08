@@ -36,4 +36,5 @@ public class QRService extends BaseService<QR, QRRepository> {
         if (!ctx.isAdmin() && !qr.getUserId().equals(ctx.getUserId())) throw new AmaException(AmaException.AmaErrors.FORBIDDEN);
         return qr;
     }
+
 }

@@ -14,8 +14,9 @@ public class AmaException extends RuntimeException {
         EMAIL_NOT_EXISTS(6, "The e-mail does not exist in database", HttpStatus.NOT_FOUND),
         TOKEN_NOT_EXISTS(7, "The token does not exist in database", HttpStatus.NOT_FOUND),
         USER_ALREADY_ACTIVE(9, "User connected with this email is already active", HttpStatus.CONFLICT),
+        PASSWORD_NOT_MATCH(11, "Passwords do not match", HttpStatus.BAD_REQUEST),
 
-        INTERNAL_SERVER_ERROR(10, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        INTERNAL_SERVER_ERROR(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 
         private final int code;
         private final String message;
