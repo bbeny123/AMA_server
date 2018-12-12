@@ -15,7 +15,6 @@
                 <th th:text="#{user.id}"></th>
                 <th th:text="#{user.email}"></th>
                 <th th:text="#{user.name}"></th>
-                <th th:text="#{user.type}"></th>
                 <th th:text="#{user.active}"></th>
             </tr>
             </thead>
@@ -24,7 +23,6 @@
                 <td th:text="${usr.id}"></td>
                 <td th:text="${usr.email}"></td>
                 <td th:text="${usr.name}"></td>
-                <td th:text="${usr.type}"></td>
                 <td th:switch="${usr.active}">
                     <span th:case="true" th:text="#{user.active.active}"></span>
                     <form method="post" th:action="@{'/users/' + ${usr.id} + '/activate'}" th:case="false">

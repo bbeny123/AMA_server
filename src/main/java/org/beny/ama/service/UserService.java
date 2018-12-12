@@ -1,18 +1,22 @@
 package org.beny.ama.service;
 
 import org.beny.ama.model.*;
+import org.beny.ama.model.Role.Roles;
 import org.beny.ama.repository.UserCouponRepository;
 import org.beny.ama.repository.UserQRRepository;
 import org.beny.ama.repository.UserRepository;
 import org.beny.ama.util.AmaException;
 import org.beny.ama.util.MailUtil;
+import org.beny.ama.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -36,7 +40,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     public List<User> findBusinessUsers() {
-        return getRepository().findByType(User.Type.B);
+        return getRepository().findByRoles_Role(Roles.BUSINESS);
     }
 
     public boolean existsByEmail(String email) {
@@ -44,17 +48,17 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     public void createUser(User user) throws AmaException {
-        create(user, User.Type.U);
+        create(user, Collections.singleton(RoleUtil.userRole()));
     }
 
     public void createBusiness(User user) throws AmaException {
-        create(user, User.Type.B);
+        create(user, Collections.singleton(RoleUtil.businessRole()));
     }
 
-    private void create(User user, User.Type type) throws AmaException {
+    private void create(User user, Set<Role> role) throws AmaException {
         if (existsByEmail(user.getEmail())) throw new AmaException(AmaException.AmaErrors.USER_EXISTS);
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setType(type);
+        user.setRoles(role);
         user.setActive(false);
         user.setToken(UUID.randomUUID().toString());
         user = saveAndFlush(user);
@@ -72,7 +76,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     public User findByEmail(String email) throws AmaException {
-        return getRepository().findOneByEmail(email).orElseThrow(() -> new AmaException(AmaException.AmaErrors.EMAIL_NOT_EXISTS));
+        return getRepository().findByEmail(email).orElseThrow(() -> new AmaException(AmaException.AmaErrors.EMAIL_NOT_EXISTS));
     }
 
     public void resendToken(User user) throws AmaException {

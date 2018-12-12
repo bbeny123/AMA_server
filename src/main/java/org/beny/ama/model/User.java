@@ -12,12 +12,14 @@ import java.util.Set;
                 @NamedAttributeNode("qrs"),
                 @NamedAttributeNode("coupons"),
                 @NamedAttributeNode("points"),
-                @NamedAttributeNode("userPoints")
+                @NamedAttributeNode("userPoints"),
+                @NamedAttributeNode("roles")
         }),
         @NamedEntityGraph(name = User.EntityGraphs.WITH_QRS, attributeNodes = @NamedAttributeNode("qrs")),
         @NamedEntityGraph(name = User.EntityGraphs.WITH_COUPONS, attributeNodes = @NamedAttributeNode("coupons")),
         @NamedEntityGraph(name = User.EntityGraphs.WITH_POINTS, attributeNodes = @NamedAttributeNode("points")),
-        @NamedEntityGraph(name = User.EntityGraphs.WITH_USER_POINTS, attributeNodes = @NamedAttributeNode("userPoints"))
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_USER_POINTS, attributeNodes = @NamedAttributeNode("userPoints")),
+        @NamedEntityGraph(name = User.EntityGraphs.WITH_ROLES, attributeNodes = @NamedAttributeNode("roles"))
 })
 public class User {
 
@@ -27,12 +29,7 @@ public class User {
         String WITH_COUPONS = "User.WITH_COUPONS_GRAPH";
         String WITH_POINTS = "User.WITH_POINTS_GRAPH";
         String WITH_USER_POINTS = "User.WITH_USER_POINTS_GRAPH";
-    }
-
-    public enum Type {
-        A,  //admin
-        B,  //business user
-        U   //standard user
+        String WITH_ROLES = "User.WITH_ROLES_GRAPH";
     }
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,10 +49,6 @@ public class User {
     @Column(name = "USR_NAME", length = 120)
     private String name;
 
-    @Column(name = "USR_TYPE", length = 1, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type = Type.U;
-
     @Column(name = "USR_ACTIVE")
     private boolean active;
 
@@ -70,6 +63,10 @@ public class User {
 
     @OneToMany(mappedBy = "businessUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Points> userPoints;
+
+    @ManyToMany
+    @JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "URL_USR_ID"), inverseJoinColumns = @JoinColumn(name = "URL_ROL_ID"))
+    private Set<Role> roles;
 
     public Long getId() {
         return id;
@@ -101,14 +98,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public boolean isActive() {
@@ -177,5 +166,16 @@ public class User {
 
     public void setUserPoints(Set<Points> userPoints) {
         this.userPoints = userPoints;
+    }
+
+    public Set<Role> getRoles() {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

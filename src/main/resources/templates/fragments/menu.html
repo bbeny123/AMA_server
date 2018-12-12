@@ -5,7 +5,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <a class="navbar-brand" th:href="@{/}" th:text="#{menu.home}"></a>
         <div class="navbar-nav">
-            <a class="nav-item nav-link" id="users" sec:authorize="hasAuthority('A')" th:href="@{/users}" th:text="#{menu.users}"></a>
+            <a class="nav-item nav-link" id="users" sec:authorize="hasAuthority('ADMIN')" th:href="@{/users}" th:text="#{menu.users}"></a>
         </div>
         <div class="navbar-nav" sec:authorize="!isAuthenticated()">
             <a class="nav-item nav-link" id="login" th:href="@{/login}" th:text="#{menu.login}"></a>

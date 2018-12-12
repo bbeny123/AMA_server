@@ -16,6 +16,7 @@ public class AmaException extends RuntimeException {
         USER_ALREADY_ACTIVE(9, "User connected with this email is already active", HttpStatus.CONFLICT),
         PASSWORD_NOT_MATCH(11, "Passwords do not match", HttpStatus.BAD_REQUEST),
         PASSWORD_SAME_AS_OLD(12, "New password same as old", HttpStatus.BAD_REQUEST),
+        ROLE_NOT_EXISTS(12, "Role does not exist!", HttpStatus.NOT_FOUND),
 
         QR_MORE_THAN_ONCE(100, "This QR code can be scanned only once", HttpStatus.FORBIDDEN),
         QR_MORE_THAN_ONCE_PER_DAY(101, "This QR code can be scanned only once per day", HttpStatus.FORBIDDEN),

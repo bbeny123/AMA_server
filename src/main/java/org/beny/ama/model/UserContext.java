@@ -1,5 +1,6 @@
 package org.beny.ama.model;
 
+import org.beny.ama.model.Role.Roles;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,7 +20,7 @@ public class UserContext implements UserDetails, Authentication {
 
     public UserContext(User user) {
         this.user = user;
-        this.authorities = AuthorityUtils.createAuthorityList(user.getType().name());
+        this.authorities = AuthorityUtils.createAuthorityList(user.getRoles().stream().map(r -> r.getRole().getRole()).toArray(String[]::new));
     }
 
     public UserContext(User user, String password) {
@@ -32,11 +33,11 @@ public class UserContext implements UserDetails, Authentication {
     }
 
     public boolean isAdmin() {
-        return User.Type.A == user.getType();
+        return user.getRoles().stream().anyMatch(r -> r.getRole() == Roles.ADMIN);
     }
 
     public boolean isBusiness() {
-        return User.Type.B == user.getType();
+        return user.getRoles().stream().anyMatch(r -> r.getRole() == Roles.BUSINESS);
     }
 
     @Override

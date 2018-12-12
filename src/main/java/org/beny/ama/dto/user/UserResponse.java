@@ -1,24 +1,27 @@
 package org.beny.ama.dto.user;
 
+import org.beny.ama.model.Role;
 import org.beny.ama.model.User;
+
+import java.util.Set;
 
 public class UserResponse extends UserListResponse {
 
-    private String type;
+    private Set<Role> roles;
     private boolean active;
 
     public UserResponse(User user) {
         super(user);
-        this.type = user.getType().name();
+        this.roles = user.getRoles();
         this.active = user.isActive();
     }
 
-    public String getType() {
-        return type;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public boolean isActive() {

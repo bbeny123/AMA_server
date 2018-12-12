@@ -24,7 +24,7 @@ public abstract class AbstractRESTController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> validException(MethodArgumentNotValidException ex) {
         logger.warn(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse(ex));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse(ex));
     }
 
     @ExceptionHandler(Exception.class)

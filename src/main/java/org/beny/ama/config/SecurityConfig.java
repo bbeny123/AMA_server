@@ -1,6 +1,6 @@
 package org.beny.ama.config;
 
-import org.beny.ama.model.User;
+import org.beny.ama.model.Role.Roles;
 import org.beny.ama.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/static/**", "/", "/login/**", "/register/**", "/rest/**").permitAll()
-                .antMatchers("/users/**").hasAuthority(User.Type.A.name())
+                .antMatchers("/users/**").hasAuthority(Roles.ADMIN.getRole())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
