@@ -1,5 +1,6 @@
 package org.beny.ama.config;
 
+import org.beny.ama.model.Role;
 import org.beny.ama.model.UserContext;
 import org.beny.ama.service.UserService;
 import org.beny.ama.util.AmaException;
@@ -32,7 +33,7 @@ public class TokenConverter extends JwtAccessTokenConverter {
         if (authentication.getUserAuthentication() != null) {
             UserContext user = (UserContext) authentication.getPrincipal();
             Map<String, Object> additionalInfo = new HashMap<>();
-            additionalInfo.put("roles", user.getPrincipal().getRoles());
+            additionalInfo.put("roles", user.getPrincipal().getRoles().stream().map(Role::getRole));
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         }
         return accessToken;
